@@ -1,0 +1,104 @@
+ <html>
+ <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ <script type="text/javascript" src="{{ url_for('static', filename='js/renard.js') }}"></script>
+</head>
+<h1> Bonjour ! </h1>
+
+<div id="txtBoxex">
+	<label for="nbRenards">Nombre de renards :</label>
+	<input type="number" id="nbRenards" step=10 value=10 min=0>
+
+	<label for="nbLapins">Nombre de Lapin :</label>
+	<input type="number" id="nbLapins" step=10 value=30 min=0>
+
+	<label for="dureeSurvieRenard">Durée de survie du renard sans manger :</label>
+	<input type="number" id="dureeSurvieRenard" value=10 min=0>
+
+	<label for="tailleX">Longueur du terrain :</label>
+	<input type="number" id="tailleX" value=10 min=2>
+
+	<label for="tailleY">Largeur du terrain :</label>
+	<input type="number" id="tailleY" value=10 min=2>
+
+	<label for="rangeRenard">Distance de détection des renards :</label>
+	<input type="number" id="rangeRenard" value=3 min=1>
+
+	<label for="frequenceApparition">Fréquence d'apparition des lapins :</label>
+	<input type="number" id="frequenceApparition" value=0.1 min=0 max=1 step = 0.01>
+
+	<label for="nbTourMax">Nombre de Tour à simuler :</label>
+	<input type="number" id="nbTourMax" value=10 min=0>
+</div>
+
+<button id='btnTour'>Tour par tour</button>
+<button id='btnSimu'>Simulation Complète</button>
+
+<div id="myDiv">
+	<table id="sketuveu">
+		<tbody></tbody>
+	</table>
+</div>
+<script>
+function miseEnForme(simulation) {
+	simulation=JSON.parse(JSON.parse(simulation).replace(/'/g,'"'));
+	var monTableau = document.getElementById('sketuveu').getElementsByTagName('tbody')[0];
+	monTableau.innerHTML = '';
+	for (var i = 0; i < simulation.tableau.length; i++) {
+		var newRow = monTableau.insertRow(monTableau.rows.length);
+		for (var j = 0; j < simulation.tableau[i].length; j++) {
+			var newText = document.createTextNode('blabla');
+			var newCell = newRow.insertCell(0);
+			newCell.appendChild(newText);
+
+			if (simulation.tableau[j][i].type=='R') {
+				newCell.className = 'renard';
+				newCell.innerHTML = 'Renard';
+			}
+			else if (simulation.tableau[j][i].type=='L') {
+				newCell.className = 'lapin';
+				newCell.innerHTML = 'Lapin';
+			}
+			else {
+				newCell.className = 'vide';
+				newCell.innerHTML = '    ';
+			}
+		}
+	}
+}
+
+$("#btnTour").click(function(){callPython()});
+$("#btnSimu").click(function(){
+	var g=0;
+	for(var i=0;i<document.getElementById('nbTourMax').value;i++){
+		setTimeout(function(){ 
+			callPython();
+			g++;
+			if(g==document.getElementById('nbTourMax').value){
+				setTimeout(function(){ 
+					$.ajax({url : 'http://localhost:5000/initSimu',type :'GET'});
+				},5000);
+			}
+		}, i*1000);
+		
+	}
+});
+
+function callPython(){
+	var frequenceApparition = document.getElementById('frequenceApparition').value;
+	var rangeRenard = document.getElementById('rangeRenard').value;
+	var dureeSurvieRenard = document.getElementById('dureeSurvieRenard').value;
+	var nbRenards = document.getElementById('nbRenards').value;
+	var nbLapins = document.getElementById('nbLapins').value;
+	var tailleX = document.getElementById('tailleX').value;
+	var tailleY = document.getElementById('tailleY').value;
+	var nbTourMax = document.getElementById('nbTourMax').value;	
+	$.ajax({url : 'http://localhost:5000',type :'POST',data :'frequenceApparition='+frequenceApparition+'&rangeRenard='+rangeRenard+'&dureeSurvieRenard='+dureeSurvieRenard+'&nbRenards='+nbRenards+'&nbLapins='+nbLapins+'&tailleX='+tailleX+'&tailleY='+tailleY+'&nbTourMax='+nbTourMax,success : function(res, statut){
+		miseEnForme(res);
+		}
+	});
+}
+</script>
+</html>

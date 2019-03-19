@@ -1,0 +1,30 @@
+
+.renard {
+	background-color : red;
+}
+
+.lapin {
+	background-color : blue;
+}
+
+.vide {
+	background-color : white ;
+}
+table {
+    border: 1px solid green;
+    border-collapse: collapse;
+    width:100%;
+}
+
+table td {
+	border: 1px solid green;
+	min-width: 80px;
+	min-height: 80px;
+}
+
+table td.shrink {
+    white-space:nowrap
+}
+table td.expand {
+    width: 99%
+}

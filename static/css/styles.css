@@ -1,30 +1,24 @@
 
 .renard {
-	background-color : red;
+	content:url('../renard.jpg');
+	height: 20px;
+  	width: 20px;
+	/* background-color : red; */
 }
-
 .lapin {
-	background-color : blue;
+	content:url('../lapin.jpg');
+	height: 20px;
+  	width: 20px;
 }
 
 .vide {
-	background-color : white ;
+	content:url('../herbe.jpg');
+	height: 20px;
+  	width: 20px;
 }
-table {
-    border: 1px solid green;
-    border-collapse: collapse;
-    width:100%;
-}
-
-table td {
-	border: 1px solid green;
-	min-width: 80px;
-	min-height: 80px;
-}
-
-table td.shrink {
-    white-space:nowrap
-}
-table td.expand {
-    width: 99%
-}
+.rTable { display: table; }
+.rTableRow { display: table-row; }
+.rTableHeading { display: table-header-group; }
+.rTableBody { display: table-row-group; }
+.rTableFoot { display: table-footer-group; }
+.rTableCell, .rTableHead { display: table-cell; }

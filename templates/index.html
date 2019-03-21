@@ -32,7 +32,9 @@
 	<label for="nbTourMax">Nombre de Tour à simuler :</label>
 	<input type="number" id="nbTourMax" value=10 min=0>
 </div>
+<div id="test" class="rTable">
 
+</div>
 <button id='btnTour'>Tour par tour</button>
 <button id='btnSimu'>Simulation Complète</button>
 
@@ -44,28 +46,39 @@
 <script>
 function miseEnForme(simulation) {
 	simulation=JSON.parse(JSON.parse(simulation).replace(/'/g,'"'));
-	var monTableau = document.getElementById('sketuveu').getElementsByTagName('tbody')[0];
+	var monTableau = document.getElementById('test');
 	monTableau.innerHTML = '';
 	for (var i = 0; i < simulation.tableau.length; i++) {
-		var newRow = monTableau.insertRow(monTableau.rows.length);
+		var newRow = document.createElement('div');
+		newRow.className = 'rTableRow';
 		for (var j = 0; j < simulation.tableau[i].length; j++) {
-			var newText = document.createTextNode('blabla');
-			var newCell = newRow.insertCell(0);
-			newCell.appendChild(newText);
+			var newText = document.createElement('div');
+			newText.className ='rTableCell';
+			newRow.appendChild(newText);
 
 			if (simulation.tableau[j][i].type=='R') {
-				newCell.className = 'renard';
-				newCell.innerHTML = 'Renard';
+				var newImg = document.createElement('img');
+				newImg.src ="{{ url_for('static', filename='renard.jpg') }}";
+				newImg.style.height = '20px';
+    			newImg.style.width = '20px';
+				newText.append(newImg);
 			}
 			else if (simulation.tableau[j][i].type=='L') {
-				newCell.className = 'lapin';
-				newCell.innerHTML = 'Lapin';
+				var newImg = document.createElement('img');
+				newImg.src ="{{ url_for('static', filename='lapin.jpg') }}";
+				newImg.style.height = '20px';
+    			newImg.style.width = '20px';
+				newText.append(newImg);
 			}
 			else {
-				newCell.className = 'vide';
-				newCell.innerHTML = '    ';
+				var newImg = document.createElement('img');
+				newImg.src ="{{ url_for('static', filename='herbe.jpg') }}";
+				newImg.style.height = '20px';
+    			newImg.style.width = '20px';
+				newText.append(newImg);
 			}
 		}
+		monTableau.appendChild(newRow)
 	}
 }
 

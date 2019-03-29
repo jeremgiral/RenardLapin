@@ -8,38 +8,81 @@
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
  <script type="text/javascript" src="{{ url_for('static', filename='js/renard.js') }}"></script>
 </head>
-<h1> Bonjour ! </h1>
+<h1> Expérience Renard & Lapin, Codé par Monsieur Giraldine</h1>
 
-<div id="txtBoxex">
-	<label for="nbRenards">Nombre de renards :</label>
-	<input type="number" id="nbRenards" step=10 value=10 min=0>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="row">
+				<div class="col-md-2">
+					<form>
+					<div class="form-style-10" class="inner-wrap">
+						<label for="nbRenards">Nombre de Renards :</label>
+						<input placeholder="Nombre de Renards" type="number" id="nbRenards" step=10 value=10 min=0>
 
-	<label for="nbLapins">Nombre de Lapin :</label>
-	<input type="number" id="nbLapins" step=10 value=30 min=0>
+						<label for="nbLapins">Nombre de Lapin :</label>
+						<input placeholder="Nombre de Lapins" type="number" id="nbLapins" step=10 value=30 min=0>
 
-	<label for="dureeSurvieRenard">Durée de survie du renard sans manger :</label>
-	<input type="number" id="dureeSurvieRenard" value=10 min=0>
+						<label for="dureeSurvieRenard">Durée de survie du renard sans manger :</label>
+						<input placeholder="Vie Renard sans manger" type="number" id="dureeSurvieRenard" value=10 min=0>
 
-	<label for="tailleX">Longueur du terrain :</label>
-	<input type="number" id="tailleX" value=10 min=2>
+						<label for="tailleX">Longueur du terrain :</label>
+						<input placerholder="Longueur du terrain" type="number" id="tailleX" value=10 min=2>
 
-	<label for="tailleY">Largeur du terrain :</label>
-	<input type="number" id="tailleY" value=10 min=2>
+						<label for="tailleY">Largeur du terrain :</label>
+						<input placerholder="Largeur du terrain" type="number" id="tailleY" value=10 min=2>
 
-	<label for="rangeRenard">Distance de détection des renards :</label>
-	<input type="number" id="rangeRenard" value=3 min=1>
+						<label for="rangeRenard">Distance de détection des renards :</label>
+						<input placerholder="Distance détection Renards" type="number" id="rangeRenard" value=3 min=1>
 
-	<label for="frequenceApparition">Fréquence d'apparition des lapins :</label>
-	<input type="number" id="frequenceApparition" value=0.1 min=0 max=1 step = 0.01>
+						<label for="frequenceApparition">Fréquence d'apparition des lapins :</label>
+						<input placerholder="Fréquence d'apparition Lapins"type="number" id="frequenceApparition" value=0.1 min=0 max=1 step = 0.01>
 
-	<label for="nbTourMax">Nombre de Tour à simuler :</label>
-	<input type="number" id="nbTourMax" value=10 min=0>
+						<label for="nbTourMax">Nombre de Tour à simuler :</label>
+						<input placeholder="Nombre de tours" type="number" id="nbTourMax" value=10 min=0>
+					</div>
+					</form>
+				</div>
+				<div class="col-md-8">
+					<div class="row">
+						<button  id='btnTour'>Tour par tour</button> 
+						<button  id='btnSimu'>Simulation Complète</button>
+					</div>
+					<div class="row">
+						<div id="test" class="rTable">
+					</div>
+				</div>
+				
+		</div>
+		<div class="col-md-2">
+					<div class="row">
+						<ul class="nav nav-pills">
+						<li class="nav-item">
+							 <a class="nav-link btn btn-primary" >Renards vivants <span id="rvivant" class="badge badge-light">42</span></a>
+						</li>
+						<li class="nav-item">
+							 <a class="nav-link">Renards Morts <span id="rmort" class="badge badge-secondary">16</span></a>
+						</li>
+						<li class="nav-item">
+							 <a class="nav-link btn btn-primary" >Lapins vivants <span id="lvivant" class="badge badge-light">42</span></a>
+						</li>
+						<li class="nav-item">
+							 <a class="nav-link" >Lapins Morts <span id="lmort" class="badge badge-secondary">16</span></a>
+						</li>
+						<li class="nav-item">
+							 <a class="nav-link btn btn-primary" >Nombre de tours : <span id="nbretour" class="badge badge-light">42</span></a>
+						</li>
+					</ul>
+					</div></div>
+			</div>
+	</div>
 </div>
-<div id="test" class="rTable">
 
-</div>
-<button id='btnTour'>Tour par tour</button>
-<button id='btnSimu'>Simulation Complète</button>
+	
+
+
+
+
 
 <div id="myDiv">
 	<table id="sketuveu">
@@ -95,6 +138,7 @@ function miseEnForme(simulation) {
 $("#btnTour").click(function(){callPython()});
 $("#btnSimu").click(function(){
 	var g=0;
+	document.getElementById(btnSimu.id).disabled = true;
 	for(var i=0;i<document.getElementById('nbTourMax').value;i++){
 		setTimeout(function(){ 
 			callPython();
@@ -102,11 +146,14 @@ $("#btnSimu").click(function(){
 			if(g==document.getElementById('nbTourMax').value){
 				setTimeout(function(){ 
 					$.ajax({url : 'http://localhost:5000/initSimu',type :'GET'});
+					document.getElementById(btnSimu.id).disabled = false;
 				},10000);
 			}
 		}, i*2000);
+
 		
 	}
+	
 });
 
 function callPython(){

@@ -13,10 +13,8 @@ class Animal:
         self.type = type
     def __repr__(self):
             return str(vars(self))
-    def randMove(self,simulation,position=[0, 1, 2, 3]) :
-        pos = position if len(position)>=3 else [0, 1, 2, 3]
-        statut=0
-        while len(pos) > 0 and statut==0:
+    def randMove(self,simulation,pos = [0, 1, 2, 3]) :
+        while (len(pos) > 0) :
             rand = pos[randint(0,len(pos)-1)]
             newX = self.positionX
             newY = self.positionY
@@ -36,7 +34,6 @@ class Animal:
                 simulation.tableau[self.positionX][self.positionY] = 0
                 self.positionX = newX
                 self.positionY = newY
-                statut=1
             
         
     
